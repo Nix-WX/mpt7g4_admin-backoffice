@@ -723,57 +723,88 @@
     <section class="content">
       <div class="container-fluid">
         <div>
-          <!-- left column -->
-          <div class="col-md-12">
-            <!-- general form elements -->
-            <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">Search User</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <form role="form" id="searchUserForm">
-                <div class="card-body">
-                  <div class="form-group" style="margin-bottom: 0">
-                    <label for="userPhone">User Phone Number</label>
-                    <input type="text" class="form-control" id="userPhone" placeholder="Phone Number" autocomplete="off">
+          <div class="row">
+            <!-- left column -->
+            <div class="col-md-6">
+              <!-- general form elements -->
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">Search User</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form role="form" id="searchUserForm">
+                  <div class="card-body">
+                    <div class="form-group" style="margin-bottom: 0">
+                      <label for="userPhone">User Phone Number</label>
+                      <input type="text" class="form-control" id="userPhone" placeholder="Phone Number" autocomplete="off">
+                    </div>
                   </div>
-                </div>
-                <!-- /.card-body -->
+                  <!-- /.card-body -->
 
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Search</button>
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                  </div>
+                </form>
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- right column -->
+            <div class="col-md-6">
+              <!-- general form elements -->
+              <div class="card card-orange">
+                <div class="card-header">
+                  <h3 class="card-title">Get Affected User</h3>
                 </div>
-              </form>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form role="form" id="affectedUserForm">
+                  <div class="card-body">
+                    <div class="form-group" style="margin-bottom: 0">
+                      <label for="affecterPhone">User Phone Number</label>
+                      <input type="text" class="form-control" id="affecterPhone" placeholder="Phone Number" autocomplete="off">
+                    </div>
+                  </div>
+                  <!-- /.card-body -->
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Get</button>
+                  </div>
+                </form>
+              </div>
+              <!-- /.card -->
             </div>
-            <!-- /.card -->
-            <div class="card card-primary" id="user-table-main-container" style="display: none">
-                <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4"><div class="row"><div class="col-sm-12">
-                <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" role="grid" aria-describedby="example2_info" style="margin: 0;">
-                  <thead>
-                    <tr role="row">
-                        <th tabindex="0" rowspan="1" colspan="1">User ID</th>
-                        <th tabindex="0" rowspan="1" colspan="1">Phone Number</th>
-                        <th tabindex="0" rowspan="1" colspan="1">Name</th>
-                        <th tabindex="0" rowspan="1" colspan="1">Status</th>
-                        <th tabindex="0" rowspan="1" colspan="1">Diagnosed</th>
-                    </tr>
-                  </thead>
-                  <tbody id="user-table-body"></tbody>
-                  <tfoot>
-                    <tr>
-                        <th rowspan="1" colspan="1">User ID</th>
-                        <th rowspan="1" colspan="1">Phone Number</th>
-                        <th rowspan="1" colspan="1">Name</th>
-                        <th rowspan="1" colspan="1">Status</th>
-                        <th rowspan="1" colspan="1">Diagnosed</th>
-                    </tr>
-                  </tfoot>
-                </table>
-                </div></div></div>
-            </div>
-            <h2 id="no-user-header" style="display: none; margin-top: 50px; text-align: center;">No User Found</h2>
           </div>
+
+          <h2 id="user-list-header" style="display: none; margin-bottom: 20px; text-align: center;">Users</h2>
+          <h2 id="affected-user-header" style="display: none; margin-bottom: 20px; text-align: center;"></h2>
+
+
+          <div class="card card-primary" id="user-table-main-container" style="display: none">
+              <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4"><div class="row"><div class="col-sm-12">
+              <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" role="grid" aria-describedby="example2_info" style="margin: 0;">
+                <thead>
+                  <tr role="row">
+                    <th tabindex="0" rowspan="1" colspan="1">Phone Number</th>
+                    <th tabindex="0" rowspan="1" colspan="1">Name</th>
+                    <th tabindex="0" rowspan="1" colspan="1">Status</th>
+                    <th tabindex="0" rowspan="1" colspan="1">Recovered / Not Detected</th>
+                    <th tabindex="0" rowspan="1" colspan="1">Diagnosed</th>
+                  </tr>
+                </thead>
+                <tbody id="user-table-body"></tbody>
+                <tfoot>
+                  <tr>
+                    <th rowspan="1" colspan="1">Phone Number</th>
+                    <th rowspan="1" colspan="1">Name</th>
+                    <th rowspan="1" colspan="1">Status</th>
+                    <th rowspan="1" colspan="1">Recovered / Not Detected</th>
+                    <th rowspan="1" colspan="1">Diagnosed</th>
+                  </tr>
+                </tfoot>
+              </table>
+              </div></div></div>
+          </div>
+          <h2 id="no-user-header" style="display: none; margin-top: 50px; text-align: center;">No User Found</h2>
         </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -809,133 +840,247 @@
 <script src="../../dist/js/demo.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
-    const apiURL = "http://54.179.6.91:3000";
+  const apiURL = "http://54.179.6.91:3000";
+  var affecterPhone = "";
+  var searchPhone = "";
 
-    $("#searchUserForm").submit(function(e) {
-        e.preventDefault();
+  // Search User //
+  $("#searchUserForm").submit(function(e) {
+    e.preventDefault();
 
-        var userPhone = $("#userPhone").val().toString();
+    searchPhone = $("#userPhone").val().toString();
 
-        if(!userPhone) {
+    if(!searchPhone) {
+      getAllUser();
+    }
+    else {
+      searchUserByPhone(searchPhone);
+    }
+  });
+
+
+  function getAllUser() {
+
+    $("#user-list-header").show();
+    $("#affected-user-header").hide();
+
+    $.ajax({
+        url: `${apiURL}/user` ,
+        type: "GET",
+        contentType: "application/json",
+        dataType: 'json',
+        success: function (response) {
+          const data = response.data;
+
+          $("#user-table-main-container").show();
+          $("#no-user-header").hide();
+
+          $("#user-table-body").empty();
+
+          if(data.length > 0) {
+            displayUserList(data);
+          }
+          else {
+            $("#user-table-main-container").hide();
+            $("#no-user-header").show();
+          }
+        },
+        error: function (e) {
+          alert("Error has occured.");
+        }
+    });
+  }
+
+  function searchUserByPhone(userPhone) {
+
+    $("#user-list-header").show();
+    $("#affected-user-header").hide();
+
+    $.ajax({
+      url: `${apiURL}/user/searchByPhone/${userPhone}` ,
+      type: "GET",
+      contentType: "application/json",
+      dataType: 'json',
+      success: function (response) {
+        const data = response.data;
+
+        $("#user-table-main-container").show();
+        $("#no-user-header").hide();
+
+        $("#user-table-body").empty();
+
+        if(data) {
+            let display;
+
+            switch(data.status) {
+              case "Diagnosed":
+                  statusClass = "bg-danger";
+                  break;
+              case "High":
+                  statusClass = "bg-warning";
+                  break;
+              case "Low":
+                  statusClass = "bg-gradient-success";
+                  break;
+              default:
+                  statusClass = "";
+            }
+
+            display += `<tr role="row" class="even">
+              <td tabindex="0" class="sorting_1" name="${data._id}">${data.phone}</td>
+              <td>${data.name}</td>
+              <td><div class="info-box ${statusClass}" style="width: 120px;margin: auto;max-width: 80%; min-height: unset; justify-content: center">${data.status}</div></td>
+              <td style="text-align: center"><button class="btn btn-success confirm-recovered-btn" style="box-shadow: 3px 3px 3px #ccc">Confirm</button></td>
+              <td style="text-align: center"><button class="btn btn-danger confirm-diagnosed-btn" style="box-shadow: 3px 3px 3px #ccc">Confirm</button></td>
+            </tr>`;
+            
+            $("#user-table-body").html(display);
+        }
+        else {
+            $("#user-table-main-container").hide();
+            $("#no-user-header").show();
+        }
+      },
+      error: function (e) {
+          alert("Error has occured.");
+      }
+    });
+  }
+
+  function displayUserList(users) {
+    let display;
+                  
+    for(var i = 0; i < users.length; i++) {
+        let statusClass;
+
+        switch(users[i].status) {
+          case "Diagnosed":
+            statusClass = "bg-danger";
+            break;
+          case "High":
+            statusClass = "bg-warning";
+            break;
+          case "Low":
+            statusClass = "bg-gradient-success";
+            break;
+          default:
+            statusClass = "";
+        }
+
+        display += `<tr role="row" class="even">
+          <td tabindex="0" class="sorting_1" name="${users[i]._id}">${users[i].phone}</td>
+          <td>${users[i].name}</td>
+          <td><div class="info-box ${statusClass}" style="width: 120px;margin: auto;max-width: 80%; min-height: unset; justify-content: center">${users[i].status}</div></td>
+          <td style="text-align: center"><button class="btn btn-success confirm-recovered-btn" style="box-shadow: 3px 3px 3px #ccc">Confirm</button></td>
+          <td style="text-align: center"><button class="btn btn-danger confirm-diagnosed-btn" style="box-shadow: 3px 3px 3px #ccc">Confirm</button></td>
+        </tr>`;
+    }
+    $("#user-table-body").html(display);
+  }
+
+
+  // Get Affected Users //
+  $("#affectedUserForm").submit(function(e) {
+    e.preventDefault();
+    
+    if($("#affecterPhone").val().toString() === "") {
+      return;
+    }
+
+    affecterPhone = $("#affecterPhone").val().toString();
+
+    $("#user-list-header").hide();
+    $("#affected-user-header").show();
+    $("#affected-user-header").html("User(s) Affected By " + affecterPhone);
+
+    getAffectedUsers(affecterPhone);
+  });
+
+
+  function getAffectedUsers(searchAffectedPhone) {
+    $.ajax({
+      url: `${apiURL}/user/getAffectedUser/${searchAffectedPhone}` ,
+      type: "GET",
+      contentType: "application/json",
+      dataType: 'json',
+      success: function (response) {
+        const data = response.data;
+
+        $("#user-table-main-container").show();
+        $("#no-user-header").hide();
+        $("#user-table-body").empty();
+
+        if(data.length > 0) {
+          displayUserList(data);
+        }
+        else {
+          $("#user-table-main-container").hide();
+          $("#no-user-header").show();
+        }
+      },
+      error: function (e) {
+        alert(e.responseJSON.error.message);
+      }
+    });
+  }
+
+
+  // Confirm Diagnosed Handler //
+  $('body').on('click', '.confirm-diagnosed-btn', function() {
+    if(!confirm("Are you sure ? This action will lead to changes that cannot be undone!")) {
+      return;
+    }
+
+    const userId = $($(this).parent().siblings()[0]).attr('name');
+
+    $.ajax({
+      url: `${apiURL}/user/diagnosed` ,
+      type: "POST",
+      contentType: "application/json",
+      dataType: 'json',
+      data: JSON.stringify({"userId": userId}),
+      success: function (response) {
+        if($("#affected-user-header").is(":hidden")) {
           getAllUser();
         }
         else {
-          searchUserByPhone(userPhone);
+          getAffectedUsers(affecterPhone);
         }
+      },
+      error: function (err) {
+        alert(err.responseJSON.error.message);
+      }
     });
+  });
 
 
-    function getAllUser() {
-      $.ajax({
-          url: `${apiURL}/user` ,
-          type: "GET",
-          contentType: "application/json",
-          dataType: 'json',
-          success: function (response) {
-              const data = response.data;
-
-              $("#user-table-main-container").show();
-              $("#no-user-header").hide();
-
-              $("#user-table-body").empty();
-
-              if(data.length > 0) {
-                  let display;
-                  
-                  for(var i = 0; i < data.length; i++) {
-                      let statusClass;
-
-                      switch(data[i].status) {
-                          case "Diagnosed":
-                              statusClass = "bg-danger";
-                              break;
-                          case "High":
-                              statusClass = "bg-warning";
-                              break;
-                          case "Low":
-                              statusClass = "bg-gradient-success";
-                              break;
-                          case "Undefined":
-                              break;
-                          default:
-                              statusClass = "";
-                      }
-
-
-                      display += `<tr role="row" class="even">
-                          <td tabindex="0" class="sorting_1">${data[i]._id}</td>
-                          <td>${data[i].phone}</td>
-                          <td>${data[i].name}</td>
-                          <td><div class="info-box ${statusClass}" style="width: 120px;margin: auto;max-width: 80%; min-height: unset; justify-content: center">${data[i].status}</div></td>
-                          <td style="text-align: center"><button class="btn btn-danger">Confirm</button></td>
-                      </tr>`;
-                  }
-                  $("#user-table-body").html(display);
-              }
-              else {
-                  $("#user-table-main-container").hide();
-                  $("#no-user-header").show();
-              }
-          },
-          error: function (e) {
-              alert("Error has occured.");
-          }
-      });
+  // Confirm Recovered Handler //
+  $('body').on('click', '.confirm-recovered-btn', function() {
+    if(!confirm("Confirm this user to be recovered or not detected?")) {
+      return;
     }
 
-    function searchUserByPhone(userPhone) {
-        $.ajax({
-            url: `${apiURL}/user/searchByPhone/${userPhone}` ,
-            type: "GET",
-            contentType: "application/json",
-            dataType: 'json',
-            success: function (response) {
-                const data = response.data;
+    const userId = $($(this).parent().siblings()[0]).attr('name');
 
-                $("#user-table-main-container").show();
-                $("#no-user-header").hide();
-
-                $("#user-table-body").empty();
-
-                if(data) {
-                    let display;
-
-                    switch(data.status) {
-                        case "Diagnosed":
-                            statusClass = "bg-danger";
-                            break;
-                        case "High":
-                            statusClass = "bg-warning";
-                            break;
-                        case "Low":
-                            statusClass = "bg-gradient-success";
-                            break;
-                        case "Undefined":
-                            break;
-                        default:
-                            statusClass = "";
-                    }
-
-                    display += `<tr role="row" class="even">
-                        <td tabindex="0" class="sorting_1">${data._id}</td>
-                        <td>${data.phone}</td>
-                        <td>${data.name}</td>
-                        <td><div class="info-box ${statusClass}" style="width: 120px;margin: auto;max-width: 80%; min-height: unset; justify-content: center">${data.status}</div></td>
-                        <td style="text-align: center"><button class="btn btn-danger">Confirm</button></td>
-                    </tr>`;
-                    
-                    $("#user-table-body").html(display);
-                }
-                else {
-                    $("#user-table-main-container").hide();
-                    $("#no-user-header").show();
-                }
-            },
-            error: function (e) {
-                alert("Error has occured.");
-            }
-        });
-    }
+    $.ajax({
+      url: `${apiURL}/user/recovered` ,
+      type: "POST",
+      contentType: "application/json",
+      dataType: 'json',
+      data: JSON.stringify({"userId": userId}),
+      success: function (response) {
+        if($("#affected-user-header").is(":hidden")) {
+          getAllUser();
+        }
+        else {
+          getAffectedUsers(affecterPhone);
+        }
+      },
+      error: function (err) {
+        alert(err.responseJSON.error.message);
+      }
+    });
+  });
 });
 </script>
 </body>
