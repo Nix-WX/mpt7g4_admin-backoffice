@@ -809,8 +809,7 @@
 <script src="../../dist/js/demo.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
-    const apiUrl = "192.168.1.109:3000/";
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjUzMWQ4YTcwYzZkZTQ2NGIzMzQ3YjUiLCJwaG9uZSI6IjAxMS0xMjM0NTY3IiwiaWF0IjoxNTk5Mjg3NzUzLCJleHAiOjE1OTkyOTEzNTN9.vPSflDUBMhcp-LHt17d9TGYUnb9ea5p2ZUJV-9qPl2Y";
+    const apiURL = "http://54.179.6.91:3000";
 
     $("#searchUserForm").submit(function(e) {
         e.preventDefault();
@@ -818,80 +817,78 @@ $(document).ready(function () {
         var userPhone = $("#userPhone").val().toString();
 
         if(!userPhone) {
-            getAllUser();
+          getAllUser();
         }
         else {
-            searchUserByPhone(userPhone);
+          searchUserByPhone(userPhone);
         }
     });
 
 
     function getAllUser() {
-        $.ajax({
-            url: `http://192.168.1.214:3000/user` ,
-            type: "GET",
-            contentType: "application/json",
-            dataType: 'json',
-            headers: { 'Authorization': token },
-            success: function (response) {
-                const data = response.data;
+      $.ajax({
+          url: `${apiURL}/user` ,
+          type: "GET",
+          contentType: "application/json",
+          dataType: 'json',
+          success: function (response) {
+              const data = response.data;
 
-                $("#user-table-main-container").show();
-                $("#no-user-header").hide();
+              $("#user-table-main-container").show();
+              $("#no-user-header").hide();
 
-                $("#user-table-body").empty();
+              $("#user-table-body").empty();
 
-                if(data.length > 0) {
-                    let display;
-                    
-                    for(var i = 0; i < data.length; i++) {
-                        let statusClass;
+              if(data.length > 0) {
+                  let display;
+                  
+                  for(var i = 0; i < data.length; i++) {
+                      let statusClass;
 
-                        switch(data[i].status) {
-                            case "Diagnosed":
-                                statusClass = "bg-danger";
-                                break;
-                            case "High":
-                                statusClass = "bg-warning";
-                                break;
-                            case "Low":
-                                statusClass = "bg-gradient-success";
-                                break;
-                            case "Undefined":
-                                break;
-                            default:
-                                statusClass = "";
-                        }
+                      switch(data[i].status) {
+                          case "Diagnosed":
+                              statusClass = "bg-danger";
+                              break;
+                          case "High":
+                              statusClass = "bg-warning";
+                              break;
+                          case "Low":
+                              statusClass = "bg-gradient-success";
+                              break;
+                          case "Undefined":
+                              break;
+                          default:
+                              statusClass = "";
+                      }
 
 
-                        display += `<tr role="row" class="even">
-                            <td tabindex="0" class="sorting_1">${data[i]._id}</td>
-                            <td>${data[i].phone}</td>
-                            <td>${data[i].name}</td>
-                            <td><div class="info-box ${statusClass}" style="width: 120px;margin: auto;max-width: 80%; min-height: unset; justify-content: center">${data[i].status}</div></td>
-                            <td style="text-align: center"><button class="btn btn-danger">Confirm</button></td>
-                        </tr>`;
-                    }
-                    $("#user-table-body").html(display);
-                }
-                else {
-                    $("#user-table-main-container").hide();
-                    $("#no-user-header").show();
-                }
-            },
-            error: function (e) {
-                alert("Error has occured.");
-            }
-        });
+                      display += `<tr role="row" class="even">
+                          <td tabindex="0" class="sorting_1">${data[i]._id}</td>
+                          <td>${data[i].phone}</td>
+                          <td>${data[i].name}</td>
+                          <td><div class="info-box ${statusClass}" style="width: 120px;margin: auto;max-width: 80%; min-height: unset; justify-content: center">${data[i].status}</div></td>
+                          <td style="text-align: center"><button class="btn btn-danger">Confirm</button></td>
+                      </tr>`;
+                  }
+                  $("#user-table-body").html(display);
+              }
+              else {
+                  $("#user-table-main-container").hide();
+                  $("#no-user-header").show();
+              }
+          },
+          error: function (e) {
+              alert("Error has occured.");
+          }
+      });
     }
 
     function searchUserByPhone(userPhone) {
         $.ajax({
-            url: `http://192.168.1.214:3000/user/searchByPhone/${userPhone}` ,
+            url: `${apiURL}/user/searchByPhone/${userPhone}` ,
             type: "GET",
             contentType: "application/json",
             dataType: 'json',
-            headers: { 'Authorization': token },
             success: function (response) {
                 const data = response.data;
 
